@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %} Portal de Biblioteca {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
@@ -12,7 +13,7 @@
 
     <a href="/login">Login</a><br>
 
-    <a href="/libros">Libros</a><br>
+    <a href="{{ url_for('mostrar_libros') }}">Libros</a><br>
 
     <a href="/perfil">Perfil</a><hr>
 

@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-
+from flask import Flask, render_template, request, redirect, url_for, session, make_response
 
 app = Flask(__name__)
 
@@ -10,7 +9,7 @@ usuarios = {
     "laura": "2222",
     "diego": "3333"
 }
-libros = [
+lista_libros = [
     {
         "titulo": "Python desde cero",
         "autor": "Juan Pérez",
@@ -32,7 +31,13 @@ libros = [
 
 @app.route("/")
 def inicio():
-    return render_template("base.html")
+    ultimo_usuario = request.cookies.get("ultimo_usuario")
+    if ultimo_usuario:
+        mensaje = f"Último usuario registrado: {ultimo_usuario}"
+    else:
+        mensaje = "Bienvenido al Portal de Biblioteca."
+
+    return render_template("index.html",mensaje=mensaje)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -42,18 +47,13 @@ def login():
         contraseña = request.form.get("contraseña")
         if usuario in usuarios and usuarios[usuario] == contraseña:
             session["usuario"] = usuario
-            return redirect(url_for("inicio"))
+            respuesta = redirect(url_for("mostrar_libros"))
+            respuesta.set_cookie("ultimo_usuario",usuario)
+            return respuesta
         else:
             mensaje = "Usuario o contraseña incorrectos."
 
     return render_template("login.html",mensaje=mensaje)
-
-@app.route("/libros")
-def libros():
-    if "usuario" not in session:
-        return redirect(url_for("login"))
-
-    return "Bienvenido a la biblioteca"
 
 @app.route("/perfil")
 def perfil():
@@ -64,13 +64,18 @@ def perfil():
     return render_template("perfil.html",usuario=usuario)
 
 @app.route("/libros")
-def libros():
+def mostrar_libros():
     if "usuario" not in session:
         return redirect(url_for("login"))
 
-    return render_template("libros.html",libros=libros)
+    return render_template("libros.html",libros=lista_libros)
 
+@app.route("/eliminar_cookie")
+def eliminar_cookie():
+    respuesta = make_response(redirect(url_for("inicio")))
+    respuesta.set_cookie("ultimo_usuario","",expires=0)
 
+    return respuesta
 
 
 if __name__ == "__main__":
