@@ -10,6 +10,26 @@ usuarios = {
     "laura": "2222",
     "diego": "3333"
 }
+libros = [
+    {
+        "titulo": "Python desde cero",
+        "autor": "Juan Pérez",
+        "disponibles": 4
+    },
+
+    {
+        "titulo": "Desarrollo Web",
+        "autor": "María López",
+        "disponibles": 2
+    },
+
+    {
+        "titulo": "Inteligencia Artificial",
+        "autor": "Pedro García",
+        "disponibles": 0
+    }
+]
+
 @app.route("/")
 def inicio():
     return render_template("base.html")
@@ -40,8 +60,17 @@ def perfil():
     if "usuario" not in session:
         return redirect(url_for("login"))
     usuario = session["usuario"]
-    
+
     return render_template("perfil.html",usuario=usuario)
+
+@app.route("/libros")
+def libros():
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+
+    return render_template("libros.html",libros=libros)
+
+
 
 
 if __name__ == "__main__":

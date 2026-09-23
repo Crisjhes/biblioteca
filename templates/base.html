@@ -2,11 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-
-    <title>Portal de Biblioteca</title>
-
+    <title>{% block title %} Portal de Biblioteca {% endblock %}</title>
 </head>
-
 <body>
 
     <h1>Portal de Biblioteca</h1>
@@ -17,8 +14,13 @@
 
     <a href="/libros">Libros</a><br>
 
-    <a href="/perfil">Perfil</a>
+    <a href="/perfil">Perfil</a><hr>
+
+    {% block content %}
+
+    {% endblock %}
 
 </body>
+
 
 </html>

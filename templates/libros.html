@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+    {% block title %} Libros {% endblock %}
+
+{% block content %}
+
+
+<h2>
+Lista de libros disponibles
+</h2>
+
+<table border="1">
+    <tr>
+        <th>Título</th>
+        <th>Autor</th>
+        <th>Estado</th>
+    </tr>
+
+    {% for libro in libros %}
+        <tr>
+            <td>{{ libro.titulo }}</td>
+            <td>{{ libro.autor }}</td>
+            <td>
+                {% if libro.disponibles > 0 %}
+                        Disponible
+                    {% else %}
+                        No disponible
+                    {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
